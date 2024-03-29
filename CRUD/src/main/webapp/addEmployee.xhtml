@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<head>
+    <title>Add Employee</title>
+    <style>
+        .title {
+            font-weight: bold;
+            text-align: center;
+        }
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #add8e6;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        .form-button {
+            background-color: #007bff; 
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .form-button:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">Ajouter un nouveau employé</h1>
+    <div class="form-container">
+        <h:form>
+            <label for="name" class="form-label">Nom :</label>
+            <h:inputText id="name" value="#{employeeBean.employee.name}" class="form-input"/><br/>
+            <label for="department" class="form-label">Département :</label>
+            <h:inputText id="department" value="#{employeeBean.employee.department}" class="form-input"/><br/>
+            <label for="birthDate" class="form-label">Date de Naissance :</label>
+            <h:inputText id="birthDate" value="#{employeeBean.employee.birthDate}" class="form-input"/><br/>
+            <h:commandButton value="Enregistrer" actionListener="#{employeeBean.insert}" action="#{employeeBean.goToIndexPage}" class="form-button"/>
+        </h:form>
+    </div>
+</body>
+</html>

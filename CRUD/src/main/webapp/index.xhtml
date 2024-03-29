@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Page d'accueil</title>
+    <style>
+        .title {
+            font-weight: bold;
+            text-align: center;
+        }
+        .save-btn {
+            text-align: left;
+            margin-top: 20px;
+        }
+       .footer {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content:center;
+            margin-top: 20px;
+        }
+        .button-container {
+            margin-left:160px;
+            margin-right:170px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .dataTableCenter {
+         margin: 0 auto; 
+         width: 75%;
+       }
+       .oddRow {
+    background-color: #add8e6;
+    }
+
+.evenRow {
+    background-color: #ffe4b5; 
+}
+    </style>
+</h:head>
+<body>
+    <h1 class="title">#{msgs['welcome.message']}</h1>
+    <h:form>
+        <h:selectOneMenu value="#{localBean.language}">
+            <f:selectItem itemLabel="English" itemValue="en" />
+            <f:selectItem itemLabel="Français" itemValue="fr" />
+            <f:selectItem itemLabel="Español" itemValue="es" />
+            <f:ajax render="@form" />
+        </h:selectOneMenu>
+        <h:commandButton value="#{msgs['label.change.language']}" action="#{localBean.changeLanguage}" style="background-color:green; color: white;" />
+    </h:form>
+    <div style="text-align: center; margin-top: 20px;"> 
+        <h:dataTable value="#{employeeBean.employees}" var="employee" styleClass="dataTableCenter" rowClasses="oddRow, evenRow" border="1">
+            <h:column>
+                <f:facet name="header">#{msgs['label.employeeId']}</f:facet>
+                #{employee.employeeId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs['label.name']}</f:facet>
+                <h:outputText value="#{employee.name}" rendered="#{not employee.editMode}" />
+                <h:inputText value="#{employee.name}" rendered="#{employee.editMode}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs['label.department']}</f:facet>
+                <h:outputText value="#{employee.department}" rendered="#{not employee.editMode}" />
+                <h:inputText value="#{employee.department}" rendered="#{employee.editMode}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs['label.birthDate']}</f:facet>
+                <h:outputText value="#{employee.birthDate}" rendered="#{not employee.editMode}" />
+                <h:inputText value="#{employee.birthDate}" rendered="#{employee.editMode}" />
+            </h:column>
+            <h:column>
+                <f:facet name="header">#{msgs['label.actions']}</f:facet>
+                <h:form rendered="#{not employee.editMode}">
+                    <h:commandButton value="#{msgs.edit_button_label}" actionListener="#{employeeBean.toggleEditMode(employee)}" style="background-color: red; color: black;" />
+                    <h:commandButton value="#{msgs.delete_button_label}" actionListener="#{employeeBean.remove(employee)}" style="background-color: blue; color: white;"/>
+                </h:form>
+                <h:form rendered="#{employee.editMode}">
+                    <h:commandButton value="#{msgs.cancel_button_label}" actionListener="#{employeeBean.cancelEdit(employee)}"  style="background-color:#ffe4b5; color: black; border: none;" />
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:messages />
+        
+        <div class="button-container">
+            <h:form>
+                <h:commandButton value="#{msgs.save_button_label}" action="#{employeeBean.saveChanges()}" style="background-color: blue; color: white;" />
+            </h:form>
+            <h:form>
+                <h:commandButton value="#{msgs.add_button_label}"  action="#{employeeBean.goToAddPage}" style="background-color: blue; color: white;" />
+            </h:form>
+        </div>
+    </div>
+    <div class="footer">
+        <h:form rendered="#{employeeBean.hasPreviousPage()}">
+            <h:commandButton value="#{msgs.previous_button_label}" action="#{employeeBean.previousPage}" style="background-color:black; color: white; padding: 5px 10px; border: none; cursor: pointer;"  />
+        </h:form>
+        <h:form rendered="#{employeeBean.hasNextPage()}">
+            <h:commandButton value="#{msgs.next_button_label}" action="#{employeeBean.nextPage}" style="background-color: red; color: white; padding: 5px 10px; border: none; cursor: pointer;" />
+        </h:form>
+    </div>
+</body>
+</html>
